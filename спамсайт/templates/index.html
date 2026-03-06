@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Sender - Главная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #0b1a3a 0%, #1a3b5e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav a {
+            color: #a0aec0;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #fff;
+        }
+
+        .nav a.active {
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .username {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .subscription-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .subscription-active {
+            background: rgba(72, 187, 120, 0.2);
+            color: #9ae6b4;
+            border: 1px solid #48bb78;
+        }
+        
+        .subscription-expired {
+            background: rgba(245, 101, 101, 0.2);
+            color: #feb2b2;
+            border: 1px solid #f56565;
+        }
+        
+        .subscription-none {
+            background: rgba(160, 174, 192, 0.2);
+            color: #a0aec0;
+            border: 1px solid #718096;
+        }
+
+        .subscription-forever {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a0aec0;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 15px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .helper-text {
+            color: #718096;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.5);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        button.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        button.warning {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+
+        button.small {
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .code-section, .password-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chats-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            padding: 5px;
+        }
+
+        .chat-button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            margin: 0;
+            border-radius: 10px;
+            color: #e0e0e0;
+        }
+
+        .chat-button:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .chat-button.selected {
+            background: rgba(102, 126, 234, 0.2);
+            border-left: 4px solid #667eea;
+        }
+
+        .chat-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .chat-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #fff;
+        }
+
+        .chat-id {
+            font-size: 12px;
+            color: #a0aec0;
+            font-family: monospace;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .button-group button {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .selected-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            min-height: 40px;
+        }
+
+        .chip {
+            background: rgba(102, 126, 234, 0.3);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(102, 126, 234, 0.5);
+        }
+
+        .chip-remove {
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.7;
+            padding: 0 3px;
+        }
+
+        .chip-remove:hover {
+            opacity: 1;
+        }
+
+        .interval-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .interval-control input[type="range"] {
+            flex: 1;
+        }
+
+        #interval-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .stats-panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #a0aec0;
+        }
+
+        .stat-value {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            animation: slideIn 0.3s;
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.2);
+            color: #9ae6b4;
+            border: 1px solid #48bb78;
+        }
+
+        .status.error {
+            background: rgba(245, 101, 101, 0.2);
+            color: #feb2b2;
+            border: 1px solid #f56565;
+        }
+
+        .status.info {
+            background: rgba(102, 126, 234, 0.2);
+            color: #a0c4ff;
+            border: 1px solid #667eea;
+        }
+
+        .status.warning {
+            background: rgba(237, 137, 54, 0.2);
+            color: #fbd38d;
+            border: 1px solid #ed8936;
+        }
+
+        .flood-wait-timer {
+            background: rgba(245, 101, 101, 0.2);
+            border: 1px solid #f56565;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .timer-number {
+            font-size: 2.5em;
+            margin: 10px 0;
+            font-family: monospace;
+            color: #feb2b2;
+        }
+
+        .no-subscription-message {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .no-subscription-message a {
+            color: #f59e0b;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .no-subscription-message a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Стили для скроллбара */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Telegram Sender</h1>
+            <div class="user-info">
+                <span class="username" id="username-display">Загрузка...</span>
+                <span id="subscription-badge" class="subscription-badge subscription-none">Нет подписки</span>
+                <div class="nav">
+                    <a href="/" class="active">Главная</a>
+                    <a href="/subscription">Подписка</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция авторизации Telegram -->
+        <div id="telegram-auth-section" class="section">
+            <h2>🔐 Подключение Telegram</h2>
+            
+            <div class="form-group">
+                <label>📞 Номер телефона (с кодом страны)</label>
+                <input type="text" id="phone" placeholder="+380501234567" value="">
+                <div class="helper-text">Пример: +380501234567 (Украина)</div>
+            </div>
+            
+            <button onclick="sendCode()" id="send-code-btn" class="success">📨 Получить код</button>
+            
+            <div id="code-section" class="code-section" style="display: none;">
+                <div class="form-group">
+                    <label>🔢 Код из Telegram</label>
+                    <input type="text" id="code" placeholder="12345">
+                </div>
+                <button onclick="verifyCode()" id="verify-code-btn">✅ Подтвердить</button>
+            </div>
+            
+            <div id="password-section" class="password-section" style="display: none;">
+                <div class="form-group">
+                    <label>🔑 Пароль 2FA (если включен)</label>
+                    <input type="password" id="password" placeholder="Введите пароль">
+                </div>
+                <button onclick="checkPassword()" id="check-password-btn">🔓 Войти</button>
+            </div>
+            
+            <div id="flood-wait-timer" class="flood-wait-timer" style="display: none;">
+                <div>⏳ Слишком много попыток</div>
+                <div class="timer-number" id="timer-display">00:00</div>
+                <div>Подождите перед следующей попыткой</div>
+            </div>
+        </div>
+
+        <!-- Основной контент (после авторизации Telegram) -->
+        <div id="main-content" style="display: none;">
+            <!-- Сообщение о необходимости подписки -->
+            <div id="no-subscription-message" class="no-subscription-message" style="display: none;">
+                <h3>⚠️ Для отправки сообщений нужна подписка</h3>
+                <p>Вы можете просматривать чаты, но для запуска рассылки необходима активная подписка.</p>
+                <p>Перейдите в раздел <a href="/subscription">Подписка</a> для активации.</p>
+            </div>
+
+            <!-- Список чатов -->
+            <div class="section">
+                <h2>📋 Список чатов</h2>
+                
+                <div class="form-group">
+                    <input type="text" id="chat-search" placeholder="🔍 Поиск по названию или ID...">
+                </div>
+                
+                <div class="chats-container" id="chats-container">
+                    <div style="text-align: center; padding: 40px; color: #718096;">
+                        <div class="loading" style="margin: 0 auto 15px;"></div>
+                        Загрузка чатов...
+                    </div>
+                </div>
+                
+                <div class="selected-chips" id="selected-chips"></div>
+                
+                <div class="button-group">
+                    <button onclick="selectAllVisible()" class="small">✅ Выбрать все</button>
+                    <button onclick="deselectAll()" class="small">❌ Очистить</button>
+                    <button onclick="copySelectedIds()" class="small">📋 Копировать ID</button>
+                </div>
+            </div>
+            
+            <!-- Настройки сообщения -->
+            <div class="section">
+                <h2>✉️ Сообщение</h2>
+                
+                <div class="form-group">
+                    <textarea id="message-text" placeholder="Введите текст для отправки..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Настройки интервала -->
+            <div class="section">
+                <h2>⏱️ Интервал</h2>
+                
+                <div class="form-group">
+                    <label>Интервал между отправками (секунд)</label>
+                    <div class="interval-control">
+                        <input type="range" id="interval-slider" min="1" max="60" value="5">
+                        <span id="interval-value">5с</span>
+                    </div>
+                    <input type="number" id="interval-input" min="1" max="3600" value="5" step="1" style="margin-top: 10px;">
+                </div>
+            </div>
+            
+            <!-- Кнопки управления -->
+            <div class="section">
+                <button onclick="startSpam()" id="start-spam-btn" class="success">▶️ ЗАПУСТИТЬ РАССЫЛКУ</button>
+                <button onclick="stopSpam()" id="stop-spam-btn" style="display: none;" class="warning">⏹️ ОСТАНОВИТЬ</button>
+                
+                <div class="button-group" style="margin-top: 15px;">
+                    <button onclick="refreshChats()" class="small">🔄 Обновить чаты</button>
+                    <button onclick="logoutTelegram()" class="small">📴 Выйти из Telegram</button>
+                </div>
+            </div>
+            
+            <!-- Статистика -->
+            <div id="stats-section" style="display: none;">
+                <div class="section">
+                    <h2>📊 Статистика</h2>
+                    
+                    <div class="stats-panel">
+                        <div class="stat-row">
+                            <span class="stat-label">Статус:</span>
+                            <span class="stat-value" id="stat-status">Запуск...</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Отправлено:</span>
+                            <span class="stat-value" id="stat-sent">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Ошибок:</span>
+                            <span class="stat-value" id="stat-failed">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Циклов:</span>
+                            <span class="stat-value" id="stat-cycles">0</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Всего чатов:</span>
+                            <span class="stat-value" id="stat-total">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статус сообщения -->
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        // Глобальные переменные
+        let allChats = [];
+        let filteredChats = [];
+        let selectedChats = new Set();
+        let selectedChatObjects = new Map();
+        let currentTaskId = null;
+        let floodTimer = null;
+        let statusCheckInterval = null;
+        let currentPhone = '';
+        let canSendMessages = false;
+
+        // Загрузка информации о пользователе
+        async function loadUserInfo() {
+            try {
+                const response = await fetch('/api/auth/check');
+                const data = await response.json();
+                if (data.authenticated) {
+                    document.getElementById('username-display').textContent = data.username;
+                    await loadSubscriptionStatus();
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки информации о пользователе:', error);
+            }
+        }
+
+        // Загрузка статуса подписки
+        async function loadSubscriptionStatus() {
+            try {
+                const response = await fetch('/api/subscription/status');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const sub = data.subscription;
+                    const badge = document.getElementById('subscription-badge');
+                    canSendMessages = sub.can_send;
+                    
+                    if (sub.type === 'forever') {
+                        badge.textContent = '👑 Навсегда';
+                        badge.className = 'subscription-badge subscription-forever';
+                    } else if (sub.active) {
+                        badge.textContent = `✅ ${sub.days_left} дн.`;
+                        badge.className = 'subscription-badge subscription-active';
+                    } else if (sub.type !== 'none') {
+                        badge.textContent = '❌ Истекла';
+                        badge.className = 'subscription-badge subscription-expired';
+                    } else {
+                        badge.textContent = 'Нет подписки';
+                        badge.className = 'subscription-badge subscription-none';
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки подписки:', error);
+            }
+        }
+
+        // Проверка статуса Telegram
+        async function checkTelegramStatus() {
+            try {
+                const response = await fetch('/api/telegram/status');
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    document.getElementById('telegram-auth-section').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                    
+                    // Показываем сообщение о подписке если нужно
+                    const noSubMessage = document.getElementById('no-subscription-message');
+                    if (!canSendMessages) {
+                        noSubMessage.style.display = 'block';
+                    } else {
+                        noSubMessage.style.display = 'none';
+                    }
+                    
+                    loadChats();
+                } else {
+                    document.getElementById('telegram-auth-section').style.display = 'block';
+                    document.getElementById('main-content').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Ошибка проверки статуса Telegram:', error);
+            }
+        }
+
+        // Синхронизация слайдера и поля ввода
+        document.getElementById('interval-slider').addEventListener('input', function(e) {
+            document.getElementById('interval-value').textContent = e.target.value + 'с';
+            document.getElementById('interval-input').value = e.target.value;
+        });
+
+        document.getElementById('interval-input').addEventListener('input', function(e) {
+            let val = parseInt(e.target.value) || 5;
+            if (val < 1) val = 1;
+            if (val > 3600) val = 3600;
+            document.getElementById('interval-slider').value = val;
+            document.getElementById('interval-value').textContent = val + 'с';
+        });
+
+        // Поиск по чатам
+        document.getElementById('chat-search').addEventListener('input', filterChats);
+
+        // Отправка кода
+        async function sendCode() {
+            const phone = document.getElementById('phone').value.trim();
+            const btn = document.getElementById('send-code-btn');
+            
+            if (!phone) {
+                showStatus('Введите номер телефона', 'error');
+                return;
+            }
+
+            currentPhone = phone;
+            btn.disabled = true;
+            showStatus('📡 Отправка запроса...', 'info');
+
+            try {
+                const response = await fetch('/api/auth/send-code', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({phone: phone})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (data.already_authorized) {
+                        showStatus('✅ Автоматический вход выполнен!', 'success');
+                        await checkTelegramStatus();
+                    } else {
+                        showStatus('✅ Код отправлен! Проверьте Telegram', 'success');
+                        document.getElementById('code-section').style.display = 'block';
+                    }
+                } else {
+                    if (data.flood_wait) {
+                        startFloodTimer(data.flood_wait);
+                    }
+                    showStatus('❌ ' + data.error, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка соединения', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Проверка кода
+        async function verifyCode() {
+            const code = document.getElementById('code').value.trim();
+            const btn = document.getElementById('verify-code-btn');
+            
+            if (!code) {
+                showStatus('Введите код', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            showStatus('🔍 Проверка кода...', 'info');
+
+            try {
+                const response = await fetch('/api/auth/verify-code', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        phone: currentPhone,
+                        code: code
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('✅ Вход выполнен!', 'success');
+                    await checkTelegramStatus();
+                } else if (data.need_password) {
+                    document.getElementById('code-section').style.display = 'none';
+                    document.getElementById('password-section').style.display = 'block';
+                    showStatus('🔐 Требуется пароль 2FA', 'info');
+                } else {
+                    if (data.flood_wait) {
+                        startFloodTimer(data.flood_wait);
+                    }
+                    showStatus('❌ ' + data.error, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка соединения', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Проверка пароля 2FA
+        async function checkPassword() {
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('check-password-btn');
+            
+            if (!password) {
+                showStatus('Введите пароль', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            showStatus('🔍 Проверка пароля...', 'info');
+
+            try {
+                const response = await fetch('/api/auth/check-password', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        phone: currentPhone,
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('✅ Вход выполнен!', 'success');
+                    await checkTelegramStatus();
+                } else {
+                    if (data.flood_wait) {
+                        startFloodTimer(data.flood_wait);
+                    }
+                    showStatus('❌ ' + data.error, 'error');
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка соединения', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // Загрузка чатов
+        async function loadChats() {
+            showStatus('📥 Загрузка чатов...', 'info');
+            
+            try {
+                const response = await fetch('/api/chats');
+                const data = await response.json();
+                
+                if (data.success) {
+                    allChats = data.chats;
+                    filterChats();
+                    showStatus(`✅ Загружено ${allChats.length} чатов`, 'success');
+                } else {
+                    if (data.flood_wait) {
+                        showStatus(`⏳ Подождите ${data.flood_wait}с`, 'warning');
+                        setTimeout(() => loadChats(), data.flood_wait * 1000);
+                    } else {
+                        showStatus('❌ ' + data.error, 'error');
+                    }
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка загрузки', 'error');
+            }
+        }
+
+        // Обновление чатов
+        function refreshChats() {
+            loadChats();
+        }
+
+        // Фильтрация чатов
+        function filterChats() {
+            const searchTerm = document.getElementById('chat-search').value.toLowerCase();
+            
+            filteredChats = allChats.filter(chat => {
+                return chat.name.toLowerCase().includes(searchTerm) || 
+                       chat.id.toLowerCase().includes(searchTerm);
+            });
+            
+            displayChats(filteredChats);
+        }
+
+        // Отображение чатов
+        function displayChats(chats) {
+            const container = document.getElementById('chats-container');
+            
+            if (chats.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #718096;">❌ Чаты не найдены</div>';
+                return;
+            }
+            
+            container.innerHTML = chats.map(chat => {
+                const isSelected = selectedChats.has(chat.id);
+                const typeEmoji = {
+                    'PRIVATE': '👤',
+                    'GROUP': '👥',
+                    'SUPERGROUP': '👥',
+                    'CHANNEL': '📢',
+                    'BOT': '🤖'
+                }[chat.type] || '💬';
+                
+                return `
+                    <button class="chat-button ${isSelected ? 'selected' : ''}" onclick="toggleChat('${chat.id}')">
+                        <span class="chat-icon">${typeEmoji}</span>
+                        <div class="chat-info">
+                            <div class="chat-name">${chat.name}</div>
+                            <div class="chat-id">${chat.id}</div>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+            
+            updateSelectedDisplay();
+        }
+
+        // Выбор/отмена чата
+        function toggleChat(chatId) {
+            const chat = allChats.find(c => c.id === chatId);
+            if (!chat) return;
+            
+            if (selectedChats.has(chatId)) {
+                selectedChats.delete(chatId);
+                selectedChatObjects.delete(chatId);
+            } else {
+                selectedChats.add(chatId);
+                selectedChatObjects.set(chatId, chat);
+            }
+            
+            filterChats();
+            updateSelectedDisplay();
+        }
+
+        // Выбрать все видимые
+        function selectAllVisible() {
+            filteredChats.forEach(chat => {
+                selectedChats.add(chat.id);
+                selectedChatObjects.set(chat.id, chat);
+            });
+            filterChats();
+            updateSelectedDisplay();
+        }
+
+        // Очистить выбор
+        function deselectAll() {
+            selectedChats.clear();
+            selectedChatObjects.clear();
+            filterChats();
+            updateSelectedDisplay();
+        }
+
+        // Копировать ID
+        function copySelectedIds() {
+            const ids = Array.from(selectedChats).join('\n');
+            navigator.clipboard.writeText(ids).then(() => {
+                showStatus('✅ ID скопированы в буфер обмена', 'success');
+            }).catch(() => {
+                showStatus('❌ Ошибка копирования', 'error');
+            });
+        }
+
+        // Обновление отображения выбранных
+        function updateSelectedDisplay() {
+            const chipsContainer = document.getElementById('selected-chips');
+            
+            if (selectedChats.size === 0) {
+                chipsContainer.innerHTML = '';
+                return;
+            }
+            
+            chipsContainer.innerHTML = Array.from(selectedChatObjects.values()).map(chat => `
+                <span class="chip">
+                    ${chat.name.substring(0, 20)}${chat.name.length > 20 ? '…' : ''}
+                    <span class="chip-remove" onclick="toggleChat('${chat.id}'); event.stopPropagation();">×</span>
+                </span>
+            `).join('');
+        }
+
+        // Запуск рассылки
+        async function startSpam() {
+            if (!canSendMessages) {
+                showStatus('❌ Для отправки сообщений необходима подписка', 'error');
+                window.location.href = '/subscription';
+                return;
+            }
+
+            const message = document.getElementById('message-text').value;
+            const interval = document.getElementById('interval-input').value;
+            const chatIds = Array.from(selectedChats);
+            
+            if (!message) {
+                showStatus('Введите текст сообщения', 'error');
+                return;
+            }
+            
+            if (chatIds.length === 0) {
+                showStatus('Выберите хотя бы один чат', 'error');
+                return;
+            }
+            
+            const btn = document.getElementById('start-spam-btn');
+            btn.disabled = true;
+            
+            showStatus(`🚀 Запуск рассылки в ${chatIds.length} чатов...`, 'info');
+            
+            try {
+                const response = await fetch('/api/spam/start', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        message: message,
+                        chat_ids: chatIds,
+                        interval: parseInt(interval)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus(data.message, 'success');
+                    document.getElementById('start-spam-btn').style.display = 'none';
+                    document.getElementById('stop-spam-btn').style.display = 'block';
+                    document.getElementById('stats-section').style.display = 'block';
+                    document.getElementById('stat-total').textContent = chatIds.length;
+                    
+                    currentTaskId = data.task_id;
+                    startStatusChecking();
+                } else {
+                    showStatus('❌ ' + data.error, 'error');
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка запуска', 'error');
+                btn.disabled = false;
+            }
+        }
+
+        // Остановка рассылки
+        async function stopSpam() {
+            const btn = document.getElementById('stop-spam-btn');
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/spam/stop', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({task_id: currentTaskId})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('⏹️ Рассылка останавливается...', 'warning');
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка остановки', 'error');
+                btn.disabled = false;
+            }
+        }
+
+        // Проверка статуса рассылки
+        function startStatusChecking() {
+            if (statusCheckInterval) {
+                clearInterval(statusCheckInterval);
+            }
+            
+            statusCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/spam/status' + (currentTaskId ? `?task_id=${currentTaskId}` : ''));
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        updateSpamStats(data);
+                        
+                        if (data.status === 'stopped') {
+                            clearInterval(statusCheckInterval);
+                            resetControls();
+                            showStatus('⏸️ Рассылка остановлена', 'warning');
+                        } else if (data.status === 'completed') {
+                            clearInterval(statusCheckInterval);
+                            resetControls();
+                            showStatus('✅ Рассылка завершена!', 'success');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Ошибка проверки статуса:', error);
+                }
+            }, 1000);
+        }
+
+        // Обновление статистики рассылки
+        function updateSpamStats(data) {
+            document.getElementById('stat-sent').textContent = data.sent || 0;
+            document.getElementById('stat-failed').textContent = data.failed || 0;
+            document.getElementById('stat-cycles').textContent = data.cycles || 0;
+            
+            let statusText = '';
+            if (data.status.includes('waiting')) {
+                const waitTime = data.status.match(/waiting_(\d+)s/);
+                statusText = `⏳ Ожидание ${waitTime ? waitTime[1] : ''}с`;
+            } else if (data.status.includes('flood_wait')) {
+                const floodTime = data.status.match(/flood_wait_(\d+)s/);
+                statusText = `⚠️ Flood wait: ${floodTime ? floodTime[1] : ''}с`;
+            } else if (data.status.includes('cycle')) {
+                const cycleMatch = data.status.match(/cycle_(\d+)/);
+                const cycleNum = cycleMatch ? cycleMatch[1] : 0;
+                statusText = `🔄 Цикл #${cycleNum}`;
+            } else {
+                statusText = data.status;
+            }
+            
+            document.getElementById('stat-status').textContent = statusText;
+            
+            if (data.total > 0) {
+                const progress = ((data.sent % data.total) / data.total) * 100;
+                document.getElementById('progress-fill').style.width = progress + '%';
+            }
+        }
+
+        // Сброс элементов управления
+        function resetControls() {
+            document.getElementById('start-spam-btn').style.display = 'block';
+            document.getElementById('stop-spam-btn').style.display = 'none';
+            document.getElementById('start-spam-btn').disabled = false;
+            document.getElementById('stop-spam-btn').disabled = false;
+            document.getElementById('stats-section').style.display = 'none';
+        }
+
+        // Таймер flood wait
+        function startFloodTimer(seconds) {
+            if (floodTimer) clearInterval(floodTimer);
+            
+            const timerDiv = document.getElementById('flood-wait-timer');
+            const timerDisplay = document.getElementById('timer-display');
+            
+            timerDiv.style.display = 'block';
+            
+            let remaining = seconds;
+            
+            function updateTimer() {
+                const minutes = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                if (remaining <= 0) {
+                    clearInterval(floodTimer);
+                    timerDiv.style.display = 'none';
+                }
+                
+                remaining--;
+            }
+            
+            updateTimer();
+            floodTimer = setInterval(updateTimer, 1000);
+        }
+
+        // Выход из Telegram
+        async function logoutTelegram() {
+            try {
+                const response = await fetch('/api/telegram/logout', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({})
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showStatus('👋 Вы вышли из Telegram', 'info');
+                    document.getElementById('telegram-auth-section').style.display = 'block';
+                    document.getElementById('main-content').style.display = 'none';
+                    document.getElementById('code-section').style.display = 'none';
+                    document.getElementById('password-section').style.display = 'none';
+                    
+                    resetControls();
+                    selectedChats.clear();
+                    selectedChatObjects.clear();
+                    
+                    if (statusCheckInterval) {
+                        clearInterval(statusCheckInterval);
+                    }
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка', 'error');
+            }
+        }
+
+        // Выход с сайта
+        async function logoutWebsite() {
+            try {
+                const response = await fetch('/api/auth/logout', {method: 'POST'});
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                showStatus('❌ Ошибка', 'error');
+            }
+        }
+
+        // Статус
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+            
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        // Проверка при загрузке
+        window.onload = async function() {
+            await loadUserInfo();
+            await checkTelegramStatus();
+        };
+    </script>
+</body>
+</html>
