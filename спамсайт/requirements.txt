@@ -1,4 +1,7 @@
-flask==2.3.3
+Flask==2.3.3
 pyrogram==2.0.106
 tgcrypto==1.2.5
-asyncio
+nest-asyncio==1.5.8
+Werkzeug==2.3.7
+gunicorn==20.1.0
+requests==2.31.0
